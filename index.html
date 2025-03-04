@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARShop - Try Before You Buy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle">🌙</label>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">AR<span>Shop</span></a>
+                <nav>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
+                        <li class="nav-item"><a href="electronics.html" class="nav-link">Electronics</a></li>
+                        <li class="nav-item"><a href="gym.html" class="nav-link">Gym</a></li>
+                        <li class="nav-item"><a href="furniture.html" class="nav-link">Furniture</a></li>
+                        <li class="nav-item"><a href="wearables.html" class="nav-link">Wearables</a></li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link cart-icon">
+                                <i>🛒</i>
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <video autoplay loop muted playsinline class="hero-video">
+            <source src="assets/images/index-demo-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Try Before You Buy with AR Technology</h1>
+                    <p class="hero-subtitle">Experience products in your own space with our revolutionary augmented reality shopping experience.</p>
+                    <div class="hero-buttons">
+                        <a href="electronics.html" class="btn btn-primary">Shop Now</a>
+                        <a href="#ar-experience" class="btn btn-outline">How It Works</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features fade-in">
+        <div class="container">
+            <h2 class="section-title">Why Choose ARShop</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Virtual Try-On</h3>
+                    <p>See how products look in your space before purchasing with our advanced AR technology.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p>Get your products delivered to your doorstep within 24 hours of purchase.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">↩️</div>
+                    <h3 class="feature-title">Easy Returns</h3>
+                    <p>Not satisfied? Return products within 30 days for a full refund, no questions asked.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AR Experience Section -->
+    <section class="ar-experience fade-in" id="ar-experience">
+        <div class="container">
+            <div class="ar-content">
+                <div class="ar-text">
+                    <h2 class="ar-title">How Our AR Technology Works</h2>
+                    <p>Our cutting-edge augmented reality technology allows you to visualize products in your own space before making a purchase decision.</p>
+                    <div class="ar-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-info">
+                                <h4>Browse Products</h4>
+                                <p>Find products with the AR badge that indicates AR compatibility.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-info">
+                                <h4>Tap "View in AR"</h4>
+                                <p>Click the "View in AR" button on any compatible product.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-info">
+                                <h4>Point Your Camera</h4>
+                                <p>Point your camera at the space where you want to visualize the product.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-info">
+                                <h4>Interact & Purchase</h4>
+                                <p>Move, rotate, and resize the product. Add to cart directly from AR view.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ar-image">
+                    <div class="ar-demo">
+                        <video autoplay loop muted playsinline class="ar-demo-video">
+                            <source src="assets/images/index-demo-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="ar-overlay">
+                            <div class="play-btn">▶</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="products fade-in">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-filters">
+                <a href="electronics.html" class="filter-btn">Electronics</a>
+                <a href="gym.html" class="filter-btn">Gym</a>
+                <a href="furniture.html" class="filter-btn">Furniture</a>
+                <a href="wearables.html" class="filter-btn">Wearables</a>
+            </div>
+            <div class="products-grid">
+                <!-- Featured Product 1 (Computer) -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/laptop.jpg" alt="Computer">
+                        <div class="image-overlay"></div>
+                        <div class="ar-badge">AR Available</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Electronics</div>
+                        <h3 class="product-title">Computer</h3>
+                        <div class="product-price">Rs.50,000</div>
+                        <div class="product-actions">
+                            <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Electronics/low_poly_computer_desk.glb', this)">View in AR</button>
+                        </div>
+                        <model-viewer 
+                            class="model-viewer"
+                            src="assets/models/Electronics/low_poly_computer_desk.glb" 
+                            ar 
+                            ar-modes="scene-viewer webxr quick-look" 
+                            camera-controls 
+                            auto-rotate>
+                            <div class="loading-overlay" slot="progress-bar">
+                                <div class="spinner"></div>
+                            </div>
+                        </model-viewer>
+                    </div>
+                </div>
+                <!-- Featured Product 2 (Rubber Grip Hex Dumbbells) -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/dumbbell.jpg" alt="Rubber Grip Hex Dumbbells">
+                        <div class="image-overlay"></div>
+                        <div class="ar-badge">AR Available</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Gym</div>
+                        <h3 class="product-title">Rubber Grip Hex Dumbbells</h3>
+                        <div class="product-price">$49</div>
+                        <div class="product-actions">
+                            <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Gym/rubber_grip_hex_dumbells.glb', this)">View in AR</button>
+                        </div>
+                        <model-viewer 
+                            class="model-viewer"
+                            src="assets/models/Gym/rubber_grip_hex_dumbells.glb" 
+                            ar 
+                            ar-modes="scene-viewer webxr quick-look" 
+                            camera-controls 
+                            auto-rotate>
+                            <div class="loading-overlay" slot="progress-bar">
+                                <div class="spinner"></div>
+                            </div>
+                        </model-viewer>
+                    </div>
+                </div>
+                <!-- Featured Product 3 (Dressing Table Set) -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/chair.jpg" alt="Dressing Table Set">
+                        <div class="image-overlay"></div>
+                        <div class="ar-badge">AR Available</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Furniture</div>
+                        <h3 class="product-title">Dressing Table Set</h3>
+                        <div class="product-price">$99</div>
+                        <div class="product-actions">
+                            <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Furniture/dressing_table_set.glb', this)">View in AR</button>
+                        </div>
+                        <model-viewer 
+                            class="model-viewer"
+                            src="assets/models/Furniture/dressing_table_set.glb" 
+                            ar 
+                            ar-modes="scene-viewer webxr quick-look" 
+                            camera-controls 
+                            auto-rotate>
+                            <div class="loading-overlay" slot="progress-bar">
+                                <div class="spinner"></div>
+                            </div>
+                        </model-viewer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials fade-in">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-slider">
+                <p class="testimonial-text">"ARShop transformed my shopping experience! Seeing furniture in my space before buying saved me from making a wrong purchase."</p>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="assets/images/customer1.jpg" alt="Customer">
+                    </div>
+                    <div class="author-info">
+                        <h4>Sarah M.</h4>
+                        <p>Interior Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter fade-in">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">Stay Updated with ARShop</h2>
+                <p>Join our newsletter to receive the latest updates, offers, and AR technology news.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About ARShop</h3>
+                    <p>ARShop is revolutionizing online shopping with augmented reality technology, helping you visualize products in your own space before buying.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="electronics.html">Electronics</a></li>
+                        <li><a href="gym.html">Gym</a></li>
+                        <li><a href="furniture.html">Furniture</a></li>
+                        <li><a href="wearables.html">Wearables</a></li>
+                        <li><a href="#ar-experience">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i>📘</i></a>
+                        <a href="#" class="social-icon"><i>🐦</i></a>
+                        <a href="#" class="social-icon"><i>📷</i></a>
+                        <a href="#" class="social-icon"><i>🔗</i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ARShop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

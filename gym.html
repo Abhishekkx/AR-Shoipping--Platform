@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARShop - Gym</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">AR<span>Shop</span></a>
+                <nav>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="electronics.html" class="nav-link">Electronics</a></li>
+                        <li class="nav-item"><a href="gym.html" class="nav-link active">Gym</a></li>
+                        <li class="nav-item"><a href="furniture.html" class="nav-link">Furniture</a></li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link cart-icon">
+                                <i>🛒</i>
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">Gym</h2>
+            <div class="products-grid">
+                <!-- Product: Dumbbell Set -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/dumbell-set.jpg" alt="Dumbbell Set">
+                        <div class="ar-badge">AR Available</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Gym</div>
+                        <h3 class="product-title">Dumbbell Set</h3>
+                        <div class="product-price">$49</div>
+                        <div class="product-actions">
+                            <button class="btn btn-small">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Gym/dumbbell.glb', this)">View in AR</button>
+                        </div>
+                        <model-viewer 
+                            class="model-viewer"
+                            src="assets/models/Gym/rubber_grip_hex_dumbbells.glb" 
+                            ar 
+                            ar-modes="webxr scene-viewer quick-look" 
+                            camera-controls 
+                            auto-rotate>
+                            <div class="loading-overlay" slot="progress-bar">
+                                <div class="spinner"></div>
+                            </div>
+                        </model-viewer>
+                    </div>
+                </div>
+                <!-- Product: Treadmill -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="assets/images/treadmill.jpg" alt="Treadmill">
+                        <div class="ar-badge">AR Available</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Gym</div>
+                        <h3 class="product-title">Treadmill</h3>
+                        <div class="product-price">$599</div>
+                        <div class="product-actions">
+                            <button class="btn btn-small">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Gym/treadmill.glb', this)">View in AR</button>
+                        </div>
+                        <model-viewer 
+                            class="model-viewer"
+                            src="assets/models/Gym/treadmill_machine.glb" 
+                            ar 
+                            ar-modes="webxr scene-viewer quick-look" 
+                            camera-controls 
+                            auto-rotate>
+                            <div class="loading-overlay" slot="progress-bar">
+                                <div class="spinner"></div>
+                            </div>
+                        </model-viewer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About ARShop</h3>
+                    <p>ARShop is revolutionizing online shopping with augmented reality technology, helping you visualize products in your space before buying.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="electronics.html">Electronics</a></li>
+                        <li><a href="gym.html">Gym</a></li>
+                        <li><a href="furniture.html">Furniture</a></li>
+                        <li><a href="#ar-experience">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i>📘</i></a>
+                        <a href="#" class="social-icon"><i>🐦</i></a>
+                        <a href="#" class="social-icon"><i>📷</i></a>
+                        <a href="#" class="social-icon"><i>🔗</i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ARShop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
