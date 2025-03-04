@@ -343,7 +343,7 @@ GitHub Setup
    - Create it without a README (we’ll add our own).
 
 3. Push to GitHub:
-   git remote add origin https://github.com/your-username/ar-shopping-platform.git
+   git remote add origin https://github.com/Abhishekkx/ar-shopping-platform.git
    git branch -M main
    git push -u origin main
 
