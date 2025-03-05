@@ -1,37 +1,11 @@
-// Toggle mobile menu
-document.addEventListener("DOMContentLoaded", () => {
-    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const navMenu = document.getElementById("navMenu");
-
-    if (mobileMenuBtn && navMenu) {
-        mobileMenuBtn.addEventListener("click", () => {
-            navMenu.classList.toggle("active");
-        });
-    } else {
-        console.error("Mobile menu button or navigation menu not found.");
-    }
-
-    // Add error handling for <model-viewer> elements
-    const modelViewers = document.querySelectorAll("model-viewer");
-    modelViewers.forEach(viewer => {
-        viewer.addEventListener("load", () => {
-            console.log(`Model loaded successfully: ${viewer.src}`);
-        });
-        viewer.addEventListener("error", (event) => {
-            console.error(`Error loading model: ${viewer.src}`, event);
-            alert("Failed to load the 3D model. Please check the model path or try again.");
-        });
-    });
-});
-
-// Function to view product in AR
+// Function to view product in AR with posture detection
 function viewInAR(button) {
     const productCard = button.closest('.product-card');
     if (!productCard) {
         console.error("Product card not found for button:", button);
         return;
     }
-    const modelViewer = productCard.querySelector('model-viewer');
+    const modelViewer = productCard.querySelector('#hat-viewer');
     if (!modelViewer) {
         console.error("Model viewer element not found in product card:", productCard);
         return;
@@ -80,8 +54,26 @@ function viewInAR(button) {
                                 modelViewer.style.display = "none";
                                 button.style.display = "block";
                                 backButton.remove();
+                                clearInterval(poseInterval); // Stop polling
                             });
                             document.body.appendChild(backButton);
+
+                            // Start polling posture data
+                            const poseInterval = setInterval(() => {
+                                fetch('http://localhost:5000/pose')
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.x && data.y && data.z) {
+                                            // Map 2D pose coordinates to 3D space
+                                            const x = (data.x - 0.5) * 2; // Normalize to -1 to 1
+                                            const y = (0.5 - data.y) * 2 + 0.5; // Adjust for head height
+                                            const z = -data.z * 2; // Depth
+                                            console.log(`Positioning hat at: x=${x}, y=${y}, z=${z}`);
+                                            modelViewer.style.transform = `translate(${x}px, ${y}px, ${z}px)`;
+                                        }
+                                    })
+                                    .catch(error => console.error('Error fetching pose:', error));
+                            }, 100); // Update every 100ms
                         })
                         .catch(err => {
                             console.error("Error activating AR mode:", err);
@@ -109,3 +101,17 @@ function viewInAR(button) {
         button.style.display = "block";
     }
 }
+
+// Toggle mobile menu
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const navMenu = document.getElementById("navMenu");
+
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
+    } else {
+        console.error("Mobile menu button or navigation menu not found.");
+    }
+});

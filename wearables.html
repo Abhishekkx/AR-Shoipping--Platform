@@ -56,19 +56,20 @@
                         <div class="product-category">Wearables</div>
                         <h3 class="product-title">Stylish Hat</h3>
                         <div class="product-price">$29</div>
+                        <p class="ar-instruction">Click below to see the hat automatically placed on your head in AR.</p>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-small btn-ar" onclick="viewInAR(this)">Try On in AR</button>
                         </div>
                         <model-viewer 
+                            id="hat-viewer"
                             class="model-viewer"
                             src="assets/models/Wearables/hat.glb" 
                             ar 
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
-                            auto-rotate
                             scale="0.5 0.5 0.5"
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
