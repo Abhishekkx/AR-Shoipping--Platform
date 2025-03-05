@@ -1,117 +1,134 @@
-// Function to view product in AR with posture detection
-function viewInAR(button) {
-    const productCard = button.closest('.product-card');
-    if (!productCard) {
-        console.error("Product card not found for button:", button);
-        return;
-    }
-    const modelViewer = productCard.querySelector('#hat-viewer');
-    if (!modelViewer) {
-        console.error("Model viewer element not found in product card:", productCard);
-        return;
-    }
-
-    console.log(`Attempting to view in AR: ${modelViewer.src}`);
-    modelViewer.style.display = "block";
-    button.style.display = "none";
-
-    // Check if the page is served over HTTPS
-    if (window.location.protocol !== "https:") {
-        console.error("WebXR requires HTTPS. Current protocol:", window.location.protocol);
-        alert("AR functionality requires a secure connection (HTTPS). Please access the site via HTTPS.");
-        modelViewer.style.display = "none";
-        button.style.display = "block";
-        return;
-    }
-
-    // Check WebXR support
-    if (navigator.xr) {
-        console.log("Checking WebXR immersive-ar support...");
-        navigator.xr.isSessionSupported("immersive-ar")
-            .then(supported => {
-                if (supported) {
-                    console.log("AR is supported. Activating AR mode...");
-                    modelViewer.activateAR()
-                        .then(() => {
-                            console.log("AR mode activated successfully.");
-
-                            // Add a Back button
-                            const backButton = document.createElement("button");
-                            backButton.textContent = "Back to Shopping";
-                            backButton.classList.add("back-button");
-                            backButton.style.position = "fixed";
-                            backButton.style.bottom = "20px";
-                            backButton.style.left = "50%";
-                            backButton.style.transform = "translateX(-50%)";
-                            backButton.style.padding = "10px 20px";
-                            backButton.style.backgroundColor = "#ff6f61";
-                            backButton.style.color = "#fff";
-                            backButton.style.border = "none";
-                            backButton.style.borderRadius = "5px";
-                            backButton.style.cursor = "pointer";
-                            backButton.addEventListener("click", () => {
-                                console.log("Exiting AR mode...");
-                                modelViewer.style.display = "none";
-                                button.style.display = "block";
-                                backButton.remove();
-                                clearInterval(poseInterval); // Stop polling
-                            });
-                            document.body.appendChild(backButton);
-
-                            // Start polling posture data
-                            const poseInterval = setInterval(() => {
-                                fetch('http://localhost:5000/pose')
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.x && data.y && data.z) {
-                                            // Map 2D pose coordinates to 3D space
-                                            const x = (data.x - 0.5) * 2; // Normalize to -1 to 1
-                                            const y = (0.5 - data.y) * 2 + 0.5; // Adjust for head height
-                                            const z = -data.z * 2; // Depth
-                                            console.log(`Positioning hat at: x=${x}, y=${y}, z=${z}`);
-                                            modelViewer.style.transform = `translate(${x}px, ${y}px, ${z}px)`;
-                                        }
-                                    })
-                                    .catch(error => console.error('Error fetching pose:', error));
-                            }, 100); // Update every 100ms
-                        })
-                        .catch(err => {
-                            console.error("Error activating AR mode:", err);
-                            alert("Failed to activate AR mode. Please try again.");
-                            modelViewer.style.display = "none";
-                            button.style.display = "block";
-                        });
-                } else {
-                    console.warn("AR is not supported on this device.");
-                    alert("AR is not supported on this device. Please use a compatible device (Android with ARCore or iOS with ARKit).");
-                    modelViewer.style.display = "none";
-                    button.style.display = "block";
-                }
-            })
-            .catch(err => {
-                console.error("Error checking WebXR support:", err);
-                alert("An error occurred while checking AR support: " + err.message);
-                modelViewer.style.display = "none";
-                button.style.display = "block";
-            });
-    } else {
-        console.warn("WebXR is not available in this browser.");
-        alert("WebXR is not available. Please use a compatible browser (Chrome on Android or Safari on iOS).");
-        modelViewer.style.display = "none";
-        button.style.display = "block";
-    }
-}
-
-// Toggle mobile menu
 document.addEventListener("DOMContentLoaded", () => {
+    // Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const navMenu = document.getElementById("navMenu");
-
     if (mobileMenuBtn && navMenu) {
         mobileMenuBtn.addEventListener("click", () => {
             navMenu.classList.toggle("active");
         });
-    } else {
-        console.error("Mobile menu button or navigation menu not found.");
+    }
+
+    // AR Functionality for All Products
+    const tryOnButtons = document.querySelectorAll(".btn-ar");
+    tryOnButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const productCard = this.closest(".product-card");
+            const modelViewer = productCard.querySelector("model-viewer");
+            const videoElement = productCard.querySelector("#videoElement");
+            const canvasElement = productCard.querySelector("#canvasElement");
+            const isWearable = productCard.closest(".products")?.parentElement.querySelector(".section-title")?.textContent === "Wearables";
+
+            if (!modelViewer) return;
+
+            // Show model viewer and video feed
+            modelViewer.style.display = "block";
+            this.style.display = "none";
+            if (videoElement && canvasElement) {
+                videoElement.style.display = "block";
+                canvasElement.style.display = "block";
+            }
+
+            // Check for WebXR support
+            if (navigator.xr) {
+                navigator.xr.isSessionSupported("immersive-ar").then(supported => {
+                    if (supported && window.location.protocol === "https:") {
+                        modelViewer.activateAR().then(() => {
+                            console.log("AR mode activated.");
+                            createBackButton(modelViewer, this, videoElement, canvasElement);
+                        }).catch(err => {
+                            console.error("Error activating AR:", err);
+                            alert("Failed to activate AR mode.");
+                            modelViewer.style.display = "none";
+                            this.style.display = "block";
+                            if (videoElement && canvasElement) {
+                                videoElement.style.display = "block";
+                                canvasElement.style.display = "block";
+                            }
+                        });
+                    } else {
+                        console.log("Using 2D overlay as fallback.");
+                        if (isWearable) {
+                            setupPoseDetection(modelViewer, videoElement, canvasElement);
+                        }
+                    }
+                });
+            } else {
+                console.log("WebXR not available, using 2D overlay.");
+                if (isWearable) {
+                    setupPoseDetection(modelViewer, videoElement, canvasElement);
+                }
+            }
+        });
+    });
+
+    // Function to create a "Back to Shopping" button
+    function createBackButton(modelViewer, tryOnButton, videoElement, canvasElement) {
+        const backButton = document.createElement("button");
+        backButton.textContent = "Back to Shopping";
+        backButton.classList.add("btn", "btn-small");
+        backButton.style.position = "fixed";
+        backButton.style.bottom = "20px";
+        backButton.style.left = "50%";
+        backButton.style.transform = "translateX(-50%)";
+        backButton.style.backgroundColor = "#ff6b6b";
+        backButton.addEventListener("click", () => {
+            modelViewer.style.display = "none";
+            tryOnButton.style.display = "block";
+            if (videoElement && canvasElement) {
+                videoElement.style.display = "block";
+                canvasElement.style.display = "block";
+            }
+            backButton.remove();
+        });
+        document.body.appendChild(backButton);
+    }
+
+    // Function to set up pose detection for wearables
+    function setupPoseDetection(modelViewer, videoElement, canvasElement) {
+        if (!videoElement || !canvasElement) return;
+
+        const canvasCtx = canvasElement.getContext("2d");
+
+        // Initialize MediaPipe Pose
+        const pose = new Pose({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+        });
+
+        pose.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+
+        pose.onResults((results) => {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+            if (results.poseLandmarks) {
+                drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
+                drawLandmarks(canvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+
+                const nose = results.poseLandmarks[0]; // Nose landmark for head position
+                const x = nose.x * canvasElement.width;
+                const y = nose.y * canvasElement.height;
+
+                // Position the wearable (hat) above the head
+                modelViewer.style.left = `${x - 50}px`; // Center the hat
+                modelViewer.style.top = `${y - 150}px`; // Place above head
+            }
+            canvasCtx.restore();
+        });
+
+        // Start camera
+        const camera = new Camera(videoElement, {
+            onFrame: async () => {
+                await pose.send({ image: videoElement });
+            },
+            width: 640,
+            height: 480
+        });
+        camera.start();
     }
 });

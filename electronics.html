@@ -9,13 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Dark Mode Toggle -->
     <div class="dark-mode-toggle">
         <input type="checkbox" id="darkModeToggle">
         <label for="darkModeToggle">🌙</label>
     </div>
-
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-inner">
@@ -39,13 +36,10 @@
             </div>
         </div>
     </header>
-
-    <!-- Products Section -->
     <section class="products">
         <div class="container">
             <h2 class="section-title">Electronics</h2>
             <div class="products-grid">
-                <!-- Product: Computer -->
                 <div class="product-card">
                     <div class="product-image">
                         <img src="assets/images/laptop.jpg" alt="Computer">
@@ -58,7 +52,7 @@
                         <div class="product-price">Rs.50,000</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-ar">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -67,14 +61,13 @@
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
                         </model-viewer>
                     </div>
                 </div>
-                <!-- Product: Mac Studio -->
                 <div class="product-card">
                     <div class="product-image">
                         <img src="assets/images/mac-studio.jpeg" alt="Mac Studio">
@@ -87,7 +80,7 @@
                         <div class="product-price">Rs.4,49,999</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-ar">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -96,7 +89,7 @@
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
@@ -106,8 +99,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -149,7 +140,6 @@
             </div>
         </div>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

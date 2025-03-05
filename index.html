@@ -6,17 +6,14 @@
     <title>ARShop - Try Before You Buy</title>
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Dark Mode Toggle -->
     <div class="dark-mode-toggle">
         <input type="checkbox" id="darkModeToggle">
         <label for="darkModeToggle">🌙</label>
     </div>
 
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-inner">
@@ -41,7 +38,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-overlay"></div>
         <video autoplay loop muted playsinline class="hero-video">
@@ -62,7 +58,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features fade-in">
         <div class="container">
             <h2 class="section-title">Why Choose ARShop</h2>
@@ -86,7 +81,6 @@
         </div>
     </section>
 
-    <!-- AR Experience Section -->
     <section class="ar-experience fade-in" id="ar-experience">
         <div class="container">
             <div class="ar-content">
@@ -139,7 +133,6 @@
         </div>
     </section>
 
-    <!-- Featured Products Section -->
     <section class="products fade-in">
         <div class="container">
             <h2 class="section-title">Featured Products</h2>
@@ -150,7 +143,6 @@
                 <a href="wearables.html" class="filter-btn">Wearables</a>
             </div>
             <div class="products-grid">
-                <!-- Featured Product 1 (Computer) -->
                 <div class="product-card">
                     <div class="product-image">
                         <img src="assets/images/laptop.jpg" alt="Computer">
@@ -163,7 +155,7 @@
                         <div class="product-price">Rs.50,000</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-ar">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -172,14 +164,13 @@
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
                         </model-viewer>
                     </div>
                 </div>
-                <!-- Featured Product 2 (Rubber Grip Hex Dumbbells) -->
                 <div class="product-card">
                     <div class="product-image">
                         <img src="assets/images/dumbbell.jpg" alt="Rubber Grip Hex Dumbbells">
@@ -192,7 +183,7 @@
                         <div class="product-price">$49</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-ar">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -201,14 +192,13 @@
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
                         </model-viewer>
                     </div>
                 </div>
-                <!-- Featured Product 3 (Dressing Table Set) -->
                 <div class="product-card">
                     <div class="product-image">
                         <img src="assets/images/chair.jpg" alt="Dressing Table Set">
@@ -221,7 +211,7 @@
                         <div class="product-price">$99</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-ar">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -230,7 +220,7 @@
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
+                            style="display: none; width: 100%; height: 300px;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
@@ -241,7 +231,6 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
     <section class="testimonials fade-in">
         <div class="container">
             <h2 class="section-title">What Our Customers Say</h2>
@@ -260,7 +249,6 @@
         </div>
     </section>
 
-    <!-- Newsletter -->
     <section class="newsletter fade-in">
         <div class="container">
             <div class="newsletter-content">
@@ -274,13 +262,12 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>About ARShop</h3>
-                    <p>ARShop is revolutionizing online shopping with augmented reality technology, helping you visualize products in your own space before buying.</p>
+                    <p>ARShop is revolutionizing online shopping with augmented reality technology, helping you visualize products in your space before buying.</p>
                 </div>
                 <div class="footer-column">
                     <h3>Quick Links</h3>
@@ -315,8 +302,7 @@
                 <p>© 2025 ARShop. All rights reserved.</p>
             </div>
         </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+        </footer>
+        <script src="script.js"></script>
+        </body>
+        </html>
