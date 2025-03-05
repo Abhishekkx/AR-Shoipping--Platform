@@ -1,5 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Mobile Menu Toggle
+    let cartCount = 0;
+    const cartCountElement = document.querySelector(".cart-count");
+
+    const updateCartCount = () => {
+        cartCountElement.textContent = cartCount;
+    };
+
+    const addToCartButtons = document.querySelectorAll(".btn-add-to-cart");
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            cartCount++;
+            updateCartCount();
+            alert("Item added to cart!");
+        });
+    });
+
+    const buyNowButtons = document.querySelectorAll(".btn-buy-now");
+    buyNowButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            alert("Coming Soon");
+        });
+    });
+
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const navMenu = document.getElementById("navMenu");
     if (mobileMenuBtn && navMenu) {
@@ -8,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // AR Functionality for All Products
     const tryOnButtons = document.querySelectorAll(".btn-ar");
     tryOnButtons.forEach(button => {
         button.addEventListener("click", function () {
@@ -20,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!modelViewer) return;
 
-            // Show model viewer and video feed
             modelViewer.style.display = "block";
             this.style.display = "none";
             if (videoElement && canvasElement) {
@@ -28,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 canvasElement.style.display = "block";
             }
 
-            // Check for WebXR support
             if (navigator.xr) {
                 navigator.xr.isSessionSupported("immersive-ar").then(supported => {
                     if (supported && window.location.protocol === "https:") {
@@ -61,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Function to create a "Back to Shopping" button
     function createBackButton(modelViewer, tryOnButton, videoElement, canvasElement) {
         const backButton = document.createElement("button");
         backButton.textContent = "Back to Shopping";
@@ -83,13 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(backButton);
     }
 
-    // Function to set up pose detection for wearables
     function setupPoseDetection(modelViewer, videoElement, canvasElement) {
         if (!videoElement || !canvasElement) return;
 
         const canvasCtx = canvasElement.getContext("2d");
 
-        // Initialize MediaPipe Pose
         const pose = new Pose({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
         });
@@ -110,18 +126,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
                 drawLandmarks(canvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
 
-                const nose = results.poseLandmarks[0]; // Nose landmark for head position
+                const nose = results.poseLandmarks[0];
                 const x = nose.x * canvasElement.width;
                 const y = nose.y * canvasElement.height;
 
-                // Position the wearable (hat) above the head
-                modelViewer.style.left = `${x - 50}px`; // Center the hat
-                modelViewer.style.top = `${y - 150}px`; // Place above head
+                modelViewer.style.left = `${x - 50}px`;
+                modelViewer.style.top = `${y - 150}px`;
             }
             canvasCtx.restore();
         });
 
-        // Start camera
         const camera = new Camera(videoElement, {
             onFrame: async () => {
                 await pose.send({ image: videoElement });

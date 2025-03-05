@@ -13,10 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="dark-mode-toggle">
-        <input type="checkbox" id="darkModeToggle">
-        <label for="darkModeToggle">🌙</label>
-    </div>
     <header>
         <div class="container">
             <div class="header-inner">
@@ -57,11 +53,12 @@
                         <p class="ar-instruction">Click to try on the hat in AR. It will position above your head based on posture detection.</p>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" id="tryOnAR">Try On in AR</button>
+                            <button class="btn btn-small btn-buy-now">Buy Now</button>
+                            <button class="btn btn-small btn-ar">Try On in AR</button>
                         </div>
                         <div class="pose-preview">
-                            <video id="videoElement" autoplay playsinline style="display: block; width: 100%;"></video>
-                            <canvas id="canvasElement" style="position: absolute; top: 0; left: 0;" width="640" height="480"></canvas>
+                            <video id="videoElement" autoplay playsinline style="display: none; width: 100%;"></video>
+                            <canvas id="canvasElement" style="position: absolute; top: 0; left: 0; display: none;" width="640" height="480"></canvas>
                         </div>
                         <model-viewer 
                             id="hatModel"
@@ -80,6 +77,138 @@
             </div>
         </div>
     </section>
+
+    <!-- Virtual Try-On Section -->
+    <section class="virtual-try-on">
+        <div class="container">
+            <div class="card">
+                <h1>Virtual Try-On Diffusion</h1>
+                <p>
+                    Upload a clothing image and your avatar image to generate a virtual try-on result. 
+                    Optionally, customize the background by uploading an image or providing a text prompt.
+                </p>
+                
+                <div id="apiStatusSection" class="api-status-section">
+                    <div class="success-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Using browser-based simulation for demo purposes.
+                    </div>
+                </div>
+
+                <form id="tryOnForm">
+                    <h2>Required Images</h2>
+                    
+                    <div class="form-group">
+                        <label for="clothingImage" class="required">Clothing Image</label>
+                        <input type="file" id="clothingImage" accept="image/jpeg, image/png, image/webp" required>
+                        <div class="file-preview">
+                            <div class="preview-container" id="clothingPreview">
+                                <span>No image selected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clothingPrompt">Clothing Prompt (Optional)</label>
+                        <textarea id="clothingPrompt" rows="2" placeholder="Positive text prompt for clothing, supports compel weighting syntax."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatarImage" class="required">Avatar Image</label>
+                        <input type="file" id="avatarImage" accept="image/jpeg, image/png, image/webp" required>
+                        <div class="file-preview">
+                            <div class="preview-container" id="avatarPreview">
+                                <span>No image selected</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="avatarSex">Avatar Sex (Optional)</label>
+                        <select id="avatarSex">
+                            <option value="">Auto-detect</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatarPrompt">Avatar Prompt (Optional)</label>
+                        <textarea id="avatarPrompt" rows="2" placeholder="Text prompt for the avatar, supports compel weighting syntax."></textarea>
+                    </div>
+
+                    <h2>Background Options</h2>
+                    <p>Choose one option for the background:</p>
+                    
+                    <div class="toggle-container">
+                        <button type="button" class="toggle-btn active" id="bgNoneBtn">Original Background</button>
+                        <button type="button" class="toggle-btn" id="bgImageBtn">Upload Background</button>
+                        <button type="button" class="toggle-btn" id="bgPromptBtn">Background Prompt</button>
+                    </div>
+
+                    <div class="form-group hidden" id="bgImageGroup">
+                        <label for="backgroundImage">Background Image</label>
+                        <input type="file" id="backgroundImage" accept="image/jpeg, image/png, image/webp">
+                        <div class="file-preview">
+                            <div class="preview-container" id="backgroundPreview">
+                                <span>No image selected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="bgPromptGroup">
+                        <label for="backgroundPrompt">Background Prompt</label>
+                        <textarea id="backgroundPrompt" rows="2" placeholder="Positive text prompt for background inpainting, supports compel weighting syntax."></textarea>
+                    </div>
+
+                    <h2>Advanced Options</h2>
+                    
+                    <div class="form-group">
+                        <label for="seed">Seed (Optional)</label>
+                        <input type="number" id="seed" placeholder="Random seed will be used if negative or not specified">
+                    </div>
+
+                    <div id="errorContainer" class="error-banner hidden"></div>
+
+                    <button type="submit" id="submitBtn">Generate Try-On Image</button>
+                </form>
+            </div>
+
+            <div class="card hidden" id="resultSection">
+                <h2>Result</h2>
+                <div class="result-container">
+                    <div class="before-after-container">
+                        <div class="before-after-item">
+                            <img id="avatarImageResult" alt="Original avatar">
+                            <div class="before-after-title">Original Avatar</div>
+                        </div>
+                        <div class="before-after-item">
+                            <img id="clothingImageResult" alt="Clothing item">
+                            <div class="before-after-title">Clothing Item</div>
+                        </div>
+                        <div class="before-after-item">
+                            <canvas id="resultCanvas" class="result-image"></canvas>
+                            <div class="before-after-title">Virtual Try-On Result</div>
+                        </div>
+                    </div>
+                    <button type="button" id="downloadBtn">Download Result</button>
+                    <button type="button" id="newTryOnBtn" class="btn-outline">Create New Try-On</button>
+                </div>
+            </div>
+
+            <div class="card hidden" id="loadingSection">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Generating your try-on image...</p>
+                    <p id="loadingMessage">This may take a few seconds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -121,117 +250,191 @@
             </div>
         </div>
     </footer>
+    <script src="script.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-            const navMenu = document.getElementById("navMenu");
-            const videoElement = document.getElementById('videoElement');
-            const canvasElement = document.getElementById('canvasElement');
-            const canvasCtx = canvasElement.getContext('2d');
-            const modelViewer = document.getElementById('hatModel');
-            const tryOnButton = document.getElementById('tryOnAR');
-
-            // Mobile menu toggle
-            if (mobileMenuBtn && navMenu) {
-                mobileMenuBtn.addEventListener("click", () => {
-                    navMenu.classList.toggle("active");
+        document.addEventListener('DOMContentLoaded', function() {
+            // Background option toggle
+            const bgNoneBtn = document.getElementById('bgNoneBtn');
+            const bgImageBtn = document.getElementById('bgImageBtn');
+            const bgPromptBtn = document.getElementById('bgPromptBtn');
+            const bgImageGroup = document.getElementById('bgImageGroup');
+            const bgPromptGroup = document.getElementById('bgPromptGroup');
+            
+            bgNoneBtn.addEventListener('click', () => {
+                setActiveBackgroundOption('none');
+            });
+            
+            bgImageBtn.addEventListener('click', () => {
+                setActiveBackgroundOption('image');
+            });
+            
+            bgPromptBtn.addEventListener('click', () => {
+                setActiveBackgroundOption('prompt');
+            });
+            
+            function setActiveBackgroundOption(option) {
+                bgNoneBtn.classList.remove('active');
+                bgImageBtn.classList.remove('active');
+                bgPromptBtn.classList.remove('active');
+                bgImageGroup.classList.add('hidden');
+                bgPromptGroup.classList.add('hidden');
+                
+                if (option === 'none') {
+                    bgNoneBtn.classList.add('active');
+                } else if (option === 'image') {
+                    bgImageBtn.classList.add('active');
+                    bgImageGroup.classList.remove('hidden');
+                } else if (option === 'prompt') {
+                    bgPromptBtn.classList.add('active');
+                    bgPromptGroup.classList.remove('hidden');
+                }
+            }
+            
+            // Image preview functionality
+            function setupImagePreview(inputId, previewId) {
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(previewId);
+                
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            preview.innerHTML = `<img src="${e.target.result}" class="preview-img" alt="Preview">`;
+                        };
+                        
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        preview.innerHTML = '<span>No image selected</span>';
+                    }
                 });
             }
-
-            // Initialize MediaPipe Pose
-            const pose = new Pose({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-            });
-
-            pose.setOptions({
-                modelComplexity: 1,
-                smoothLandmarks: true,
-                minDetectionConfidence: 0.5,
-                minTrackingConfidence: 0.5
-            });
-
-            pose.onResults((results) => {
-                canvasCtx.save();
-                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-                canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-
-                if (results.poseLandmarks) {
-                    drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
-                    drawLandmarks(canvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
-
-                    const nose = results.poseLandmarks[0]; // Nose landmark for head position
-                    const x = nose.x * canvasElement.width;
-                    const y = nose.y * canvasElement.height;
-                    const z = nose.z;
-
-                    // Position the hat above the head
-                    if (modelViewer.style.display === 'block') {
-                        modelViewer.style.left = `${x - 50}px`; // Center the hat
-                        modelViewer.style.top = `${y - 150}px`; // Place above head
-                    }
+            
+            setupImagePreview('clothingImage', 'clothingPreview');
+            setupImagePreview('avatarImage', 'avatarPreview');
+            setupImagePreview('backgroundImage', 'backgroundPreview');
+            
+            // Form submission (browser-based simulation)
+            const tryOnForm = document.getElementById('tryOnForm');
+            const loadingSection = document.getElementById('loadingSection');
+            const resultSection = document.getElementById('resultSection');
+            const errorContainer = document.getElementById('errorContainer');
+            const resultCanvas = document.getElementById('resultCanvas');
+            const ctx = resultCanvas.getContext('2d');
+            
+            tryOnForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                errorContainer.textContent = '';
+                errorContainer.classList.add('hidden');
+                
+                const clothingImage = document.getElementById('clothingImage').files[0];
+                const avatarImage = document.getElementById('avatarImage').files[0];
+                const backgroundImage = document.getElementById('backgroundImage').files[0];
+                
+                if (!clothingImage || !avatarImage) {
+                    errorContainer.textContent = 'Clothing and avatar images are required.';
+                    errorContainer.classList.remove('hidden');
+                    return;
                 }
-                canvasCtx.restore();
-            });
+                
+                tryOnForm.classList.add('hidden');
+                loadingSection.classList.remove('hidden');
+                resultSection.classList.add('hidden');
+                
+                const loadingMessage = document.getElementById('loadingMessage');
+                const loadingMessages = [
+                    'Analyzing clothing patterns...',
+                    'Mapping garment to avatar dimensions...',
+                    'Generating virtual fabric physics...',
+                    'Rendering final image...'
+                ];
+                
+                let messageIndex = 0;
+                loadingMessage.textContent = loadingMessages[messageIndex];
+                
+                const messageInterval = setInterval(() => {
+                    messageIndex = (messageIndex + 1) % loadingMessages.length;
+                    loadingMessage.textContent = loadingMessages[messageIndex];
+                }, 1000);
+                
+                // Load images
+                const avatarImg = new Image();
+                const clothingImg = new Image();
+                let backgroundImg = null;
 
-            // Start camera
-            const camera = new Camera(videoElement, {
-                onFrame: async () => {
-                    await pose.send({ image: videoElement });
-                },
-                width: 640,
-                height: 480
-            });
-            camera.start();
+                avatarImg.src = URL.createObjectURL(avatarImage);
+                clothingImg.src = URL.createObjectURL(clothingImage);
+                if (bgImageBtn.classList.contains('active') && backgroundImage) {
+                    backgroundImg = new Image();
+                    backgroundImg.src = URL.createObjectURL(backgroundImage);
+                }
 
-            // AR Activation
-            tryOnButton.addEventListener('click', () => {
-                if (modelViewer) {
-                    modelViewer.style.display = 'block';
-                    tryOnButton.style.display = 'none';
-                    videoElement.style.display = 'block';
-                    canvasElement.style.display = 'block';
+                // Wait for images to load
+                Promise.all([
+                    new Promise(resolve => avatarImg.onload = resolve),
+                    new Promise(resolve => clothingImg.onload = resolve),
+                    backgroundImg ? new Promise(resolve => backgroundImg.onload = resolve) : Promise.resolve()
+                ]).then(() => {
+                    clearInterval(messageInterval);
 
-                    // Check for WebXR support
-                    if (navigator.xr) {
-                        navigator.xr.isSessionSupported('immersive-ar')
-                            .then(supported => {
-                                if (supported && window.location.protocol === "https:") {
-                                    modelViewer.activateAR()
-                                        .then(() => {
-                                            console.log("AR mode activated.");
-                                            const backButton = document.createElement("button");
-                                            backButton.textContent = "Back to Shopping";
-                                            backButton.classList.add("btn", "btn-small");
-                                            backButton.style.position = "fixed";
-                                            backButton.style.bottom = "20px";
-                                            backButton.style.left = "50%";
-                                            backButton.style.transform = "translateX(-50%)";
-                                            backButton.style.backgroundColor = "#ff6b6b";
-                                            backButton.addEventListener("click", () => {
-                                                modelViewer.style.display = "none";
-                                                tryOnButton.style.display = "block";
-                                                videoElement.style.display = "block";
-                                                canvasElement.style.display = "block";
-                                                backButton.remove();
-                                            });
-                                            document.body.appendChild(backButton);
-                                        })
-                                        .catch(err => {
-                                            console.error("Error activating AR:", err);
-                                            alert("Failed to activate AR mode.");
-                                            modelViewer.style.display = "none";
-                                            tryOnButton.style.display = "block";
-                                        });
-                                } else {
-                                    console.log("Using 2D overlay as fallback.");
-                                    // Fallback to 2D overlay if AR not supported
-                                }
-                            });
+                    // Set canvas dimensions based on avatar image
+                    resultCanvas.width = 300;
+                    resultCanvas.height = 400;
+                    const scaleFactor = Math.min(300 / avatarImg.width, 400 / avatarImg.height);
+                    const scaledAvatarWidth = avatarImg.width * scaleFactor;
+                    const scaledAvatarHeight = avatarImg.height * scaleFactor;
+
+                    // Draw background if provided
+                    if (backgroundImg) {
+                        ctx.drawImage(backgroundImg, 0, 0, 300, 400);
                     } else {
-                        console.log("WebXR not available, using 2D overlay.");
-                        // Fallback to 2D overlay
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, 300, 400);
                     }
-                }
+
+                    // Draw avatar image
+                    const avatarX = (300 - scaledAvatarWidth) / 2;
+                    const avatarY = (400 - scaledAvatarHeight) / 2;
+                    ctx.drawImage(avatarImg, avatarX, avatarY, scaledAvatarWidth, scaledAvatarHeight);
+
+                    // Draw clothing image (simplified overlay at the top center, assuming it's a hat)
+                    const clothingScaleFactor = 0.3 * scaleFactor; // Scale clothing to 30% of avatar size
+                    const clothingWidth = clothingImg.width * clothingScaleFactor;
+                    const clothingHeight = clothingImg.height * clothingScaleFactor;
+                    const clothingX = (300 - clothingWidth) / 2;
+                    const clothingY = avatarY + 20; // Place near the top of the avatar (simulating a hat)
+                    ctx.drawImage(clothingImg, clothingX, clothingY, clothingWidth, clothingHeight);
+
+                    // Display original images for comparison
+                    document.getElementById('avatarImageResult').src = URL.createObjectURL(avatarImage);
+                    document.getElementById('clothingImageResult').src = URL.createObjectURL(clothingImage);
+
+                    // Configure download button
+                    const downloadBtn = document.getElementById('downloadBtn');
+                    downloadBtn.onclick = function() {
+                        const link = document.createElement('a');
+                        link.href = resultCanvas.toDataURL('image/jpeg');
+                        link.download = 'virtual-try-on-result.jpg';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    };
+
+                    loadingSection.classList.add('hidden');
+                    resultSection.classList.remove('hidden');
+                }).catch(err => {
+                    clearInterval(messageInterval);
+                    errorContainer.textContent = 'Error processing images: ' + err.message;
+                    errorContainer.classList.remove('hidden');
+                    loadingSection.classList.add('hidden');
+                    tryOnForm.classList.remove('hidden');
+                });
+            });
+            
+            document.getElementById('newTryOnBtn').addEventListener('click', function() {
+                resultSection.classList.add('hidden');
+                tryOnForm.classList.remove('hidden');
             });
         });
     </script>
