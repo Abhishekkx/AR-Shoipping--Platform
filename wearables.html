@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARShop - Gym</title>
+    <title>ARShop - Wearables</title>
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle">🌙</label>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -17,8 +24,9 @@
                     <ul class="nav-menu" id="navMenu">
                         <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="electronics.html" class="nav-link">Electronics</a></li>
-                        <li class="nav-item"><a href="gym.html" class="nav-link active">Gym</a></li>
+                        <li class="nav-item"><a href="gym.html" class="nav-link">Gym</a></li>
                         <li class="nav-item"><a href="furniture.html" class="nav-link">Furniture</a></li>
+                        <li class="nav-item"><a href="wearables.html" class="nav-link active">Wearables</a></li>
                         <li class="nav-item">
                             <a href="#" class="nav-link cart-icon">
                                 <i>🛒</i>
@@ -35,57 +43,31 @@
     <!-- Products Section -->
     <section class="products">
         <div class="container">
-            <h2 class="section-title">Gym</h2>
+            <h2 class="section-title">Wearables</h2>
             <div class="products-grid">
-                <!-- Product: Dumbbell Set -->
+                <!-- Product: Hat -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="assets/images/dumbell-set.jpg" alt="Dumbbell Set">
+                        <img src="assets/images/hat.jpg" alt="Hat">
+                        <div class="image-overlay"></div>
                         <div class="ar-badge">AR Available</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-category">Gym</div>
-                        <h3 class="product-title">Dumbbell Set</h3>
-                        <div class="product-price">$49</div>
+                        <div class="product-category">Wearables</div>
+                        <h3 class="product-title">Stylish Hat</h3>
+                        <div class="product-price">$29</div>
                         <div class="product-actions">
-                            <button class="btn btn-small">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
+                            <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">Try On in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
-                            src="assets/models/Gym/rubber_grip_hex_dumbbells.glb" 
+                            src="assets/models/Wearables/hat.glb" 
                             ar 
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
                             auto-rotate
-                            style="display: none;">
-                            <div class="loading-overlay" slot="progress-bar">
-                                <div class="spinner"></div>
-                            </div>
-                        </model-viewer>
-                    </div>
-                </div>
-                <!-- Product: Treadmill -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="assets/images/treadmill.jpg" alt="Treadmill">
-                        <div class="ar-badge">AR Available</div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">Gym</div>
-                        <h3 class="product-title">Treadmill</h3>
-                        <div class="product-price">$599</div>
-                        <div class="product-actions">
-                            <button class="btn btn-small">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
-                        </div>
-                        <model-viewer 
-                            class="model-viewer"
-                            src="assets/models/Gym/treadmill_machine.glb" 
-                            ar 
-                            ar-modes="webxr scene-viewer quick-look" 
-                            camera-controls 
-                            auto-rotate
+                            scale="0.5 0.5 0.5"
                             style="display: none;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
@@ -111,6 +93,7 @@
                         <li><a href="electronics.html">Electronics</a></li>
                         <li><a href="gym.html">Gym</a></li>
                         <li><a href="furniture.html">Furniture</a></li>
+                        <li><a href="wearables.html">Wearables</a></li>
                         <li><a href="#ar-experience">How It Works</a></li>
                     </ul>
                 </div>

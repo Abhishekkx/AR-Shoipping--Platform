@@ -58,7 +58,7 @@
                         <div class="product-price">Rs.50,000</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Electronics/low_poly_computer_desk.glb', this)">View in AR</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -66,7 +66,8 @@
                             ar 
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
-                            auto-rotate>
+                            auto-rotate
+                            style="display: none;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>
@@ -86,7 +87,7 @@
                         <div class="product-price">Rs.4,49,999</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-small btn-ar" onclick="viewInAR('assets/models/Electronics/mac_studio.glb', this)">View in AR</button>
+                            <button class="btn btn-small btn-ar" onclick="viewInAR(this)">View in AR</button>
                         </div>
                         <model-viewer 
                             class="model-viewer"
@@ -94,7 +95,8 @@
                             ar 
                             ar-modes="webxr scene-viewer quick-look" 
                             camera-controls 
-                            auto-rotate>
+                            auto-rotate
+                            style="display: none;">
                             <div class="loading-overlay" slot="progress-bar">
                                 <div class="spinner"></div>
                             </div>

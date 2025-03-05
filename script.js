@@ -25,14 +25,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Function to view product in AR
-function viewInAR(modelSrc, button) {
-    console.log(`Attempting to view in AR: ${modelSrc}`);
-    const modelViewer = button.nextElementSibling;
+function viewInAR(button) {
+    const productCard = button.closest('.product-card');
+    if (!productCard) {
+        console.error("Product card not found for button:", button);
+        return;
+    }
+    const modelViewer = productCard.querySelector('model-viewer');
     if (!modelViewer) {
-        console.error("Model viewer element not found for button:", button);
+        console.error("Model viewer element not found in product card:", productCard);
         return;
     }
 
+    console.log(`Attempting to view in AR: ${modelViewer.src}`);
     modelViewer.style.display = "block";
     button.style.display = "none";
 
@@ -60,6 +65,16 @@ function viewInAR(modelSrc, button) {
                             const backButton = document.createElement("button");
                             backButton.textContent = "Back to Shopping";
                             backButton.classList.add("back-button");
+                            backButton.style.position = "fixed";
+                            backButton.style.bottom = "20px";
+                            backButton.style.left = "50%";
+                            backButton.style.transform = "translateX(-50%)";
+                            backButton.style.padding = "10px 20px";
+                            backButton.style.backgroundColor = "#ff6f61";
+                            backButton.style.color = "#fff";
+                            backButton.style.border = "none";
+                            backButton.style.borderRadius = "5px";
+                            backButton.style.cursor = "pointer";
                             backButton.addEventListener("click", () => {
                                 console.log("Exiting AR mode...");
                                 modelViewer.style.display = "none";
