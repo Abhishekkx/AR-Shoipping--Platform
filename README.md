@@ -35,7 +35,7 @@ Project Breakdown into Simpler Tasks
 6. Enhance Shopping Features: Add a "Buy Now" button and basic interactivity.
 7. Polish and Debug: Fix any bugs and improve responsiveness.
 
-Step-by-Step Implementation
+Step-by-Step Implementation...
 
 Step 1: Set Up Project Structure
 - Create a folder named `ar-shopping-platform`.
